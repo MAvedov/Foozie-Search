@@ -1,0 +1,21 @@
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+from more_itertools import count_cycle
+import pandas as pd
+import time
+
+city = pd.read_excel('city.xlsx')
+city = city.values.tolist()
+tasks = pd.read_excel('tasks.xlsx')
+
+concl = []
+
+for i in tasks.name:
+    a = process.extract(i,city, limit = 2)
+    b = a[0][0]
+    c = b[1]
+    concl.append([i,c,a[0][1]])
+    print(i,c,a[0][1])
+
+data = pd.DataFrame(concl, columns = ['Task','Region','Accuracy'])
+data.to_excel('data.xlsx',index = False)
